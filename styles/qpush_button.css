@@ -1,0 +1,20 @@
+QPushButton#Button1,
+QPushButton#Button2,
+QPushButton#Button3 {
+    background-color: #ffffff;
+    /* border: 1px solid #000000; */
+    border-radius: 0px;
+    padding: 5px;
+}
+
+QPushButton#Button1:hover,
+QPushButton#Button2:hover,
+QPushButton#Button3:hover {
+    background-color: #8ce8ff;
+}
+
+QPushButton#Button1:checked,
+QPushButton#Button2:checked,
+QPushButton#Button3:checked {
+    background-color: #dddddd;
+}
