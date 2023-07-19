@@ -1,16 +1,13 @@
 import sys
-from PySide6.QtGui import QAction
+from pages.agenda import Agenda
+from pages.perfil import Perfil
+from pages.home import Home
+from PySide6.QtGui import QAction, QPixmap
 from PySide6.QtCore import Qt, QFile, QTextStream
 from PySide6.QtWidgets import (
     QApplication,
     QWidget,
-    QLineEdit,
-    QTextEdit,
-    QDateEdit,
-    QTimeEdit,
     QMainWindow,
-    QGroupBox,
-    QFormLayout,
     QVBoxLayout,
     QLabel,
     QDockWidget,
@@ -23,8 +20,8 @@ class Window(QMainWindow):
     def __init__(self):
         super().__init__(parent=None)
         self.setWindowTitle("QMainWindow")
+        self.resize(900, 600)
         self._create_layouts()
-        self._create_items_form()
         self._create_menu()
         self._create_dock_menu()
         self._load_stylesheet()
@@ -36,69 +33,27 @@ class Window(QMainWindow):
         self.stacked_widget = QStackedWidget()
         self._v_box.addWidget(self.stacked_widget)
 
-        self.q_box = QGroupBox("Home")
-        self.vertical_layout = QVBoxLayout()
-        self.q_box.setLayout(self.vertical_layout)
-        self._form_layout = QFormLayout()
-        self.vertical_layout.addLayout(self._form_layout)
-
-        self.q_box2 = QGroupBox("Agenda")
-        self.vertical_layout2 = QVBoxLayout()
-        self.q_box2.setLayout(self.vertical_layout2)
-        self._form_layout2 = QFormLayout()
-        self.vertical_layout2.addLayout(self._form_layout2)
-
-        self.q_box3 = QGroupBox("Perfil")
-        self.vertical_layout3 = QVBoxLayout()
-        self.q_box3.setLayout(self.vertical_layout3)
-        self._form_layout3 = QFormLayout()
-        self.vertical_layout3.addLayout(self._form_layout3)
+        self._page_home = Home("Home")
+        self._page_agenda = Agenda("Agenda")
+        self._page_perfil = Perfil("Perfil")
         
-        self.stacked_widget.addWidget(self.q_box)  # Adicione o QGroupBox ao QStackedWidget
-        self.stacked_widget.addWidget(self.q_box2)
-        self.stacked_widget.addWidget(self.q_box3)
-
-    def _create_items_form(self):
-        self._form_layout.addRow(QLabel("Date: "), QDateEdit())
-        self._form_layout.addRow(QLabel("Time: "), QTimeEdit())
-        self._form_layout.addRow(QLabel("Locations: "), QLineEdit())
-        self._form_layout.addRow(QLabel("Description: "), QTextEdit())
-
-        q1 = QLineEdit()
-        q1.setPlaceholderText("Appoitment 1")
-        q1.setEnabled(False)
-        q2 = QLineEdit()
-        q2.setPlaceholderText("Appoitment 2")
-        q2.setEnabled(False)
-        q3 = QLineEdit()
-        q3.setPlaceholderText("Appoitment 3")
-        q3.setEnabled(False)
-        self._form_layout2.addRow(QLabel("Appoitment: "), q1)
-        self._form_layout2.addRow(QLabel("Appoitment: "), q2)
-        self._form_layout2.addRow(QLabel("Appoitment: "), q3)
-
-        q4 = QLineEdit()
-        q4.setPlaceholderText("Name")
-        q4.setEnabled(False)
-        q5 = QLineEdit()
-        q5.setPlaceholderText("Email")
-        q5.setEnabled(False)
-        q6 = QLineEdit()
-        q6.setPlaceholderText("Phone")
-        q6.setEnabled(False)
-        self._form_layout3.addRow(QLabel("Name: "), q4)
-        self._form_layout3.addRow(QLabel("Email: "), q5)
-        self._form_layout3.addRow(QLabel("Phone: "), q6)
+        self.stacked_widget.addWidget(self._page_home)
+        self.stacked_widget.addWidget(self._page_agenda)
+        self.stacked_widget.addWidget(self._page_perfil)
         
 
     def _create_menu(self):
         self.w_menu = QWidget()
         self.v_menu = QVBoxLayout(self.w_menu)
-        self.v_menu.setSpacing(0)  # Remover espaçamento entre os itens
+        self.v_menu.setSpacing(8)
+        self.v_menu.setContentsMargins(0, 0, 0, 0)
 
         self.b1 = QPushButton("Home")
         self.b2 = QPushButton("Agenda")
         self.b3 = QPushButton("Perfil")
+
+        self.b1.setIcon(QPixmap("icons\\home.png"))
+
         self.b1.setObjectName("Button1")
         self.b2.setObjectName("Button2")
         self.b3.setObjectName("Button3")
